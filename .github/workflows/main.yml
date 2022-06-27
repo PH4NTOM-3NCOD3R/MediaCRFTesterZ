@@ -1,0 +1,88 @@
+name: AIO Media CRF Tester
+
+on:
+  workflow_dispatch:
+    inputs:
+      Media_URL:
+        description: "Direct Accessible Link of Media"
+        required: true
+        type: string
+        default: ""
+      Source_Type:
+        description: "Nature Of The File, {Multimedia/Animation}"
+        required: true
+        type: choice
+        options:
+        - "Multimedia"
+        - "Animation"
+      SpeedProf:
+        description: "NCoder-specific SpeedProfile, {Moderate/Slow}"
+        required: true
+        type: choice
+        options:
+        - "Moderate"
+        - "Slow"
+      QScale:
+        description: "Quality Scale, {High/Medium}"
+        required: true
+        type: choice
+        options:
+        - "High"
+        - "Medium"
+      Resolution:
+        description: "Test Resolution, {576/450}p"
+        required: true
+        type: choice
+        options:
+        - "576"
+        - "450"
+      HeadsUP_Note:
+        description: "Description of file being NCoded"
+        required: false
+        default: ""
+      DEBUG:
+        description: "Enable Script DEBUG"
+        required: false
+        type: boolean
+        default: false
+
+env:
+  SOURCERY: ${{ secrets.SOURCERY }}
+  Media_URL: ${{ github.event.inputs.Media_URL }}
+  Source_Type: ${{ github.event.inputs.Source_Type }}
+  EnCodec: ${{ github.event.inputs.EnCodec }}
+  SpeedProf: ${{ github.event.inputs.SpeedProf }}
+  QScale: ${{ github.event.inputs.QScale }}
+  Resolution: ${{ github.event.inputs.Resolution }}
+  HeadsUP_Note: ${{ github.event.inputs.HeadsUP_Note }}
+  DEBUG: ${{ github.event.inputs.DEBUG }}
+  RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
+  FTOOL_CONVERTER: ${{ secrets.FTOOL_CONVERTER }}
+  FTOOL_PROBER: ${{ secrets.FTOOL_PROBER }}
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        EnCodec: ['AV01','HVC1','VP09']
+
+    env:
+      EnCodec: ${{ matrix.EnCodec }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set GitHub Auth
+        uses: rokibhasansagar/custom_workflows/git_config@main
+        env:
+          PAT: ${{ secrets.GH_TOKEN }}
+      - name: ${{env.EnCodec}} ${{env.Source_Type}} R3NC0D3R | ${{env.SpeedProf}} Preset + ${{env.QScale}} Quality + ${{env.Resolution}}p
+        run: |
+          echo ${{env.HeadsUP_Note}} 2>/dev/null || true
+          eval 'set -eo pipefail' 2>/dev/null && eval 'set +o history' 2>/dev/null
+          echo "$SOURCERY" | base64 -d > SOURCERY
+          source ./SOURCERY &>/dev/null && rm -f ./SOURCERY && eval 'set -o history' 2>/dev/null
+          DEOBFUS ./37-EncAIO-3ff245135c01

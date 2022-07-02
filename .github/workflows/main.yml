@@ -45,11 +45,11 @@ on:
         required: true
         type: boolean
         default: false
-      DEBUG:
-        description: "Enable Script DEBUG"
-        required: true
-        type: boolean
-        default: false
+#      DEBUG:
+#        description: "Enable Script DEBUG"
+#        required: true
+#        type: boolean
+#        default: false
 
 env:
   SOURCERY: ${{ secrets.SOURCERY }}
@@ -61,7 +61,7 @@ env:
   Resolution: ${{ github.event.inputs.Resolution }}
   HeadsUP_Note: ${{ github.event.inputs.HeadsUP_Note }}
   SplitFile: ${{ github.event.inputs.SplitFile }}
-  DEBUG: ${{ github.event.inputs.DEBUG }}
+#  DEBUG: ${{ github.event.inputs.DEBUG }}
   RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
   FTOOL_CONVERTER: ${{ secrets.FTOOL_CONVERTER }}
   FTOOL_PROBER: ${{ secrets.FTOOL_PROBER }}

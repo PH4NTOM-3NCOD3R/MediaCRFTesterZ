@@ -45,6 +45,11 @@ on:
         required: true
         type: boolean
         default: false
+      SkipVP09:
+        description: "Skip VP09 Encodes?"
+        required: true
+        type: boolean
+        default: false
 #      DEBUG:
 #        description: "Enable Script DEBUG"
 #        required: true
@@ -61,6 +66,7 @@ env:
   Resolution: ${{ github.event.inputs.Resolution }}
   HeadsUP_Note: ${{ github.event.inputs.HeadsUP_Note }}
   SplitFile: ${{ github.event.inputs.SplitFile }}
+  SkipVP09: ${{ github.event.inputs.SkipVP09 }}
 #  DEBUG: ${{ github.event.inputs.DEBUG }}
   RCLONE_CONFIG_URL: ${{ secrets.RCLONE_CONFIG_URL }}
   FTOOL_CONVERTER: ${{ secrets.FTOOL_CONVERTER }}
